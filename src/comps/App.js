@@ -1,34 +1,54 @@
 import React from 'react';
 import {
-  Grid,
-  Search,
-  Card,
-  Image
+  Icon
 } from 'semantic-ui-react';
+import axios from 'axios';
 import '../styles/main.css';
+import '../../public/1.svg';
+import '../../public/day.svg';
+import '../../public/night.svg';
+import Tempcard from './Tempcard';
+
 
 
 class App extends React.Component {
+  search = React.createRef();
+  state = {searchVal: '', timeout: null};
+
+  debounce = (func, delay) => {
+    if(this.state.timeout) {
+      clearTimeout(this.state.timeout);
+    }
+    this.setState({timeout: setTimeout(func, delay)});
+  };
+
+  apiCall = async() => {
+    const response = await axios.get('http://dataservice.accuweather.com/locations/v1/cities/autocomplete', {
+      params: {
+        apikey: 'arHapOvYGT9zakNKqeGWjaOCSbcqCL3f',
+        q: this.state.searchVal,
+      }
+  })
+    console.log(response.data);
+};
+
+  handleSearchChange = async () => {
+    this.setState({searchVal: this.search.current.value});
+    if (this.state.searchVal.length >= 0) {
+      this.debounce(this.apiCall, 3000);
+    }
+  };
+
 
   render (){
     return (
-      <Grid centered columns={7}>
-        <Grid.Row className="top">
-          <Grid.Column><Search size="large"/></Grid.Column>
-        </Grid.Row>
-        <Grid.Row className="top">
-          <Grid.Column>
-            <Card className="card">
-              <Image src='https://www.nomadfoods.com/wp-content/uploads/2018/08/placeholder-1-e1533569576673-960x960.png' />
-              <Card.Content textAlign="center">
-                <Card.Header>Algiers</Card.Header>
-                <Card.Meta>Sunny</Card.Meta>
-                <Card.Description>29 C</Card.Description>
-              </Card.Content>
-            </Card>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+      <section className="container">
+            <div className="search-bar">
+                <Icon id="search-icon" name='search' />
+              <input  type="text" id="search" ref={this.search} onChange={this.handleSearchChange} value={this.state.searchVal}/>
+            </div>
+            <Tempcard />
+        </section>
     );
   }
 }
