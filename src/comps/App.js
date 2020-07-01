@@ -43,12 +43,19 @@ class App extends React.Component {
   render (){
     return (
       <section className="container">
-            <div className="search-bar">
-                <Icon id="search-icon" name='search' />
-              <input  type="text" id="search" ref={this.search} onChange={this.handleSearchChange} value={this.state.searchVal}/>
-            </div>
-            <Tempcard />
-        </section>
+        <div className="search-bar">
+          <Icon id="search-icon" name='search' />
+          <input  type="text" id="search" ref={this.search} onChange={this.handleSearchChange} value={this.state.searchVal}/>
+        </div>
+        <div className="suggestions">
+          <ul className="suggestions-list">
+            <li tabindex="0" className="suggestions-list__item">Algiers</li>
+            <li tabindex="0" className="suggestions-list__item">Aleppo</li>
+            <li tabindex="0" className="suggestions-list__item">Aquinox</li>
+          </ul>
+        </div>
+        <Tempcard />
+      </section>
     );
   }
 }

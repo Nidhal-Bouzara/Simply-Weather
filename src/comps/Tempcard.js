@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-   Image, 
+   Image,
 } from 'semantic-ui-react';
 
 function Tempcard() {
