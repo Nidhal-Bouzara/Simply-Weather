@@ -73,7 +73,7 @@ body {
   border-top: none;
   /* padding: 1rem 2rem; */
   margin: 0;
-  transition: height 100ms ease-out;
+  transition: height 50ms ease-out;
 }
 
 .suggestions-list {
@@ -86,7 +86,7 @@ body {
 
 .suggestions-list__item {
   padding:.2rem 0rem .2rem 1.4rem;
-  transition: padding 200ms ease-out;
+  transition: padding 100ms ease-out;
   cursor: pointer;
 }
 
@@ -94,7 +94,6 @@ body {
   background: grey;
   padding:.4rem 0rem .4rem 1.4rem;
 }
-
 
 /* Card styles start here */
 .card {
