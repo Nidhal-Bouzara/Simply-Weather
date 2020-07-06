@@ -4,11 +4,11 @@ import {
 } from 'semantic-ui-react';
 import axios from 'axios';
 import '../styles/main.css';
-import '../../public/1.svg';
 import '../../public/day.svg';
 import '../../public/night.svg';
 import Tempcard from './Tempcard';
 import Suggestions from './Suggestions'
+require.context('../../public', false, /.svg$/);
 
 class App extends React.Component {
   search = React.createRef();
@@ -52,6 +52,7 @@ class App extends React.Component {
   };
 
   handleListClick = async (event) => {
+    let cityName = event.target.dataset.city;
     // Clearing the search box and removing the suggestions as an indicator
     this.setState({
       searchVal: null,
@@ -68,9 +69,9 @@ class App extends React.Component {
     // Updating state with all the necessary information we need to pass to the card component.
     this.setState({
       cardData: {
-        isDayTime: response.data[0].IsDayTime,
+        isDayTime: response.data[0].IsDayTime? 'day.svg':'night.svg',
         weatherIcon: response.data[0].WeatherIcon,
-        cityName: event.target.dataset.city,
+        cityName: cityName,
         weatherText: response.data[0].WeatherText,
         temperature: response.data[0].Temperature.Metric.Value,
       }
