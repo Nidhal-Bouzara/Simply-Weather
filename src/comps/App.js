@@ -8,6 +8,7 @@ import '../../public/day.svg';
 import '../../public/night.svg';
 import Tempcard from './Tempcard';
 import Suggestions from './Suggestions'
+import '../../public/7.svg';
 require.context('../../public', false, /.svg$/);
 
 class App extends React.Component {
@@ -21,13 +22,24 @@ class App extends React.Component {
     this.setState({timeout: setTimeout(func, delay)});
   }
 
+  // The API call that gets called by getData()
   apiCall = async() => {
     const response = await axios.get('http://dataservice.accuweather.com/locations/v1/cities/autocomplete', {
       params: {
         apikey: 'arHapOvYGT9zakNKqeGWjaOCSbcqCL3f',
         q: this.state.searchVal,
       }
-  })
+    })
+
+    return response;
+  }
+
+  // getting data for cities Suggestions
+  getData = async() => {
+    // Calling the API and waiting for response
+    const response = await this.apiCall();
+
+    // Parsing the data into a short three item list for use by suggestions menu
     let res = [];
     let i = 0;
     while (i < 3 && i < response.data.length) {
@@ -39,12 +51,15 @@ class App extends React.Component {
       }
 
     this.setState({results: res});
-};
+  }
 
   handleSearchChange = async (event) => {
+    // Setting the value for the controlled input that called this function
     this.setState({searchVal: this.search.current.value});
+
+    // Determining whether the value user entered is empty to either call the API or to close the suggestions menu (by setting the suggestions list to null)
     if (this.search.current.value !== '') {
-      this.debounce(this.apiCall, 500);
+      this.debounce(this.getData(), 500);
     } else if (this.search.current.value === '') {
       clearTimeout(this.state.timeout);
       this.setState({results: null});
